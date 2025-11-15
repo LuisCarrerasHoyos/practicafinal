@@ -1,0 +1,18 @@
+plugin: aws_ec2
+regions:
+  - sa-east-1
+
+filters:
+  instance-state-name: running
+
+hostnames:
+  - public-ip-address
+
+keyed_groups:
+  - key: tags.Role
+    prefix: role
+
+compose:
+  ansible_host: public_ip_address
+
+

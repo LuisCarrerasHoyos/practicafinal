@@ -1,0 +1,31 @@
+- name: Instalar Apache y PHP
+  package:
+    name:
+      - apache2
+      - php
+      - php-mysql
+      - libapache2-mod-php
+    state: present
+
+- name: Descargar WordPress
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: /var/www/html/
+    remote_src: yes
+
+- name: Configurar wp-config.php
+  template:
+    src: wp-config.php.j2
+    dest: /var/www/html/wordpress/wp-config.php
+  vars:
+    db_host: "{{ hostvars[groups['role_db'][0]].ansible_host }}"
+    db_name: wordpress
+    db_user: wp_user
+    db_password: wp_pass
+
+- name: Asegurar que apache esté activo
+  service:
+    name: apache2    
+    state: started
+    enabled: yes
+
