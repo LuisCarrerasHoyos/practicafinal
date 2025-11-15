@@ -1,0 +1,13 @@
+---
+- name: Configurar servidor web
+  hosts: role_web
+  become: yes
+  roles:
+    - webserver
+
+- name: Configurar servidor de base de datos
+  hosts: role_db
+  become: yes
+  roles:
+    - database
+
